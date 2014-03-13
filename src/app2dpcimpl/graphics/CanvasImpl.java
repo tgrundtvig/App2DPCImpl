@@ -121,11 +121,4 @@ public class CanvasImpl implements Canvas
        drawFilledPolygon(unitCircle);
        setTransformation(cur);
     }
-
-    @Override
-    public void drawPoint(G2D.Point2D p)
-    {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-    
 }
