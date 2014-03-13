@@ -52,11 +52,14 @@ public class PCPlatformImpl implements Platform
             
             
             //Make mouse cursor invisible
-            int[] pixels = new int[16 * 16];
-            Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16, 16, pixels, 0, 16));
-            Cursor transparentCursor
-                = Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), "invisibleCursor");
-            frame.setCursor(transparentCursor);
+            if(!app.showMouseCursor())
+            {
+                int[] pixels = new int[16 * 16];
+                Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16, 16, pixels, 0, 16));
+                Cursor transparentCursor
+                    = Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), "invisibleCursor");
+                frame.setCursor(transparentCursor);
+            }
             
             
             //Create input event handler
