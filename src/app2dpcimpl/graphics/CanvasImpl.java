@@ -26,7 +26,8 @@ import java.awt.geom.AffineTransform;
 public class CanvasImpl implements Canvas
 {
     private static final AffineTransform id = new AffineTransform(1,0,0,1,0,0);
-    private final Graphics2D g;
+    private final Polygon unitCircle;
+    private Graphics2D g;
     private final Rectangle bounds;
     private final ColorFactory colorFactory;
     private final G2D g2d;
@@ -34,15 +35,21 @@ public class CanvasImpl implements Canvas
     private Transformation2DImpl curTrans;
     
 
-    public CanvasImpl(Graphics2D g, Rectangle bounds, ColorFactory colorFactory, G2D g2d)
+    public CanvasImpl(Rectangle bounds, ColorFactory colorFactory, G2D g2d)
     {
-        this.g = g;
         this.bounds = bounds;
         this.colorFactory = colorFactory;
+        this.g2d = g2d;
+        unitCircle = g2d.createCircle(g2d.origo(), 1.0f, 16);
+    }
+    
+    public void setGraphics(Graphics2D g)
+    {
+        this.g = g;
         this.curColor = (ColorImpl) colorFactory.getBlack();
         this.g.setColor(curColor.getAWTColor());
-        this.g2d = g2d;
         this.curTrans = (Transformation2DImpl) g2d.identity();
+        g.setTransform(id);
     }
     
     @Override
@@ -106,13 +113,19 @@ public class CanvasImpl implements Canvas
     @Override
     public void drawPoint(G2D.Point2D p, float size)
     {
-       //TODO
+       Transformation2D cur = curTrans;
+       Transformation2D scale = g2d.scale(size, size);
+       Transformation2D trans = g2d.translate(p.x(), p.y());
+       Transformation2D tmp = g2d.combine(g2d.combine(cur, trans), scale);
+       setTransformation(tmp);
+       drawFilledPolygon(unitCircle);
+       setTransformation(cur);
     }
 
     @Override
     public void drawPoint(G2D.Point2D p)
     {
-        //TODO
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
     
 }

@@ -71,6 +71,7 @@ public class PCPlatformImpl implements Platform
             Screen scr = new ScreenImpl(bounds.width, bounds.height);
             G2D g2d = new G2DImpl();
             Device dev = new DeviceImpl(scr, eventHandler, eventHandler, eventHandler, g2d);
+            CanvasImpl canvas = new CanvasImpl(bounds, scr.getColorFactory(), g2d);
             if(!app.initialize(dev)) return;
             long startTimeMillis = System.currentTimeMillis();
             boolean running = app.update(0);
@@ -86,7 +87,7 @@ public class PCPlatformImpl implements Platform
                     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                     g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
                     //Draw app
-                    CanvasImpl canvas = new CanvasImpl(g, bounds, scr.getColorFactory(), g2d);
+                    canvas.setGraphics(g);
                     app.draw(canvas);
                     //Draw statistics
                     g.setColor(java.awt.Color.BLACK);
