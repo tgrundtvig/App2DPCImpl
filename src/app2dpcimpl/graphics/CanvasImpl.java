@@ -95,7 +95,10 @@ public class CanvasImpl implements Canvas
         //Temporary implementation
         p1 = curTrans.transform(p1);
         p2 = curTrans.transform(p2);
+        AffineTransform cur = g.getTransform();
+        g.setTransform(id);
         g.drawLine((int)p1.x(), (int)p1.y(), (int)p2.x(), (int)p2.y());
+        g.setTransform(cur);
     }
 
     @Override

@@ -11,12 +11,8 @@
 package app2dpcimpl.geometry;
 
 import app2dapi.geometry.AbstractG2D;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Path2D;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *
@@ -113,5 +109,16 @@ public class G2DImpl extends AbstractG2D
     {
         return new PolygonBuilderImpl();
     }
-    
+
+    @Override
+    public Polygon createPolygon(Point2D[] points)
+    {
+        //Defensive copy...
+        Point2D[] copy = new Point2D[points.length];
+        for(int i = 0; i < points.length; ++i)
+        {
+            copy[i] = points[i];
+        }
+        return new PolygonImpl(copy);
+    }
 }

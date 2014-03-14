@@ -114,7 +114,8 @@ public class PCPlatformImpl implements Platform
                     if(eventHandler.dispatch()) break;
                     
                     //Update application
-                    running = app.update(time);
+                    double seconds = time * 0.001;
+                    running = app.update(seconds);
                 }
             }
             app.destroy();
