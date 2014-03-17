@@ -77,5 +77,11 @@ public class PolygonImpl implements Polygon
         {
             return points[pos++];
         }
+        
+        @Override
+        public void remove()
+        {
+            throw new UnsupportedOperationException("Remove is not supported!");
+        }
     }
 }

@@ -21,6 +21,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.MemoryImageSource;
 
@@ -81,6 +82,7 @@ public class PCPlatformImpl implements Platform
             eventHandler.start(startTimeMillis);
             float fps = 0;
             int frameCount = 0;
+            AffineTransform id = AffineTransform.getTranslateInstance(0, 0);
             //Render loop
             while (running)
             {
@@ -93,6 +95,7 @@ public class PCPlatformImpl implements Platform
                     canvas.setGraphics(g);
                     app.draw(canvas);
                     //Draw statistics
+                    g.setTransform(id);
                     g.setColor(java.awt.Color.BLACK);
                     g.drawString("FPS: " + fps, 10, bounds.height-10);
                     //Show
