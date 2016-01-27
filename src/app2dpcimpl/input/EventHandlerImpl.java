@@ -44,6 +44,8 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
     private final List<InputEvent> inputEvents;
     private long startTime;
     private boolean quit;
+    private int halfScreenSizeX;
+    private int halfScreenSizeY;
 
     public EventHandlerImpl()
     {
@@ -53,6 +55,12 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
         inputEvents = new ArrayList<>();
         this.startTime = 0;
         this.quit = false;
+    }
+    
+    public void setScreenSize(int screenSizeX, int screenSizeY)
+    {
+        this.halfScreenSizeX = screenSizeX / 2;
+        this.halfScreenSizeY = screenSizeY / 2;
     }
     
     public long getMask()
@@ -136,8 +144,8 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
                 MouseButton b = MouseButtonMap.getMouseButton(me.getButton());
                 MousePressedEventImpl e =
                     new MousePressedEventImpl(  localTime(me.getWhen()),
-                                                me.getX(),
-                                                me.getY(),
+                                                me.getX()-halfScreenSizeX,
+                                                -me.getY()+halfScreenSizeY,
                                                 b );
                 inputEvents.add(e);
                 break;
@@ -148,8 +156,8 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
                 MouseButton b = MouseButtonMap.getMouseButton(me.getButton());
                 MouseReleasedEventImpl e =
                     new MouseReleasedEventImpl( localTime(me.getWhen()),
-                                                me.getX(),
-                                                me.getY(),
+                                                me.getX()-halfScreenSizeX,
+                                                -me.getY()+halfScreenSizeY,
                                                 b );
                 inputEvents.add(e);
                 break;
@@ -160,8 +168,8 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
                 MouseEvent me = (MouseEvent) event;
                 MouseMovedEventImpl e =
                     new MouseMovedEventImpl( localTime(me.getWhen()),
-                                                me.getX(),
-                                                me.getY());
+                                             me.getX()-halfScreenSizeX,
+                                             -me.getY()+halfScreenSizeY);
                 inputEvents.add(e);
                 break;
             }
@@ -170,8 +178,8 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
                 MouseWheelEvent mwe = (MouseWheelEvent) event;
                 MouseWheelEventImpl e = 
                         new MouseWheelEventImpl(localTime(mwe.getWhen()),
-                                                mwe.getX(),
-                                                mwe.getY(),
+                                                mwe.getX()-halfScreenSizeX,
+                                                -mwe.getY()+halfScreenSizeY,
                                                 mwe.getWheelRotation());
                 inputEvents.add(e);
                 break;
@@ -235,6 +243,7 @@ public class EventHandlerImpl implements AWTEventListener, Keyboard, Mouse, Char
     @Override
     public void addCharInputListener(CharInputListener listener)
     {
+        if(listener == null) throw new NullPointerException();
         charListeners.add(listener);
     }
 

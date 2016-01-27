@@ -25,15 +25,33 @@ public class G2DImpl extends AbstractG2D
     private final static Transformation2D FLIPY = new Transformation2DImpl(new AffineTransform(1,0,0,-1,0,0));
     
     @Override
-    public Point2D newPoint2D(float x, float y)
+    public Point2D newPoint2D(double x, double y)
     {
-        return new PV2DImpl(x, y);
+        return new PVD2DImpl(x, y);
     }
 
     @Override
-    public Vector2D newVector2D(float x, float y)
+    public Vector2D newVector2D(double x, double y)
     {
-        return new PV2DImpl(x, y);
+        return new PVD2DImpl(x, y);
+    }
+    
+    @Override
+    public Dimension2D newDimension2D(double width, double height)
+    {
+        return new PVD2DImpl(width, height);
+    }
+    
+     @Override
+    public Point2D asPoint2D(Vector2D v)
+    {
+        return (PVD2DImpl) v;
+    }
+
+    @Override
+    public Vector2D asVector2D(Point2D p)
+    {
+        return (PVD2DImpl) p;
     }
     
     @Override
@@ -43,27 +61,27 @@ public class G2DImpl extends AbstractG2D
     }
 
     @Override
-    public Transformation2D scale(float sx, float sy)
+    public Transformation2D scale(double sx, double sy)
     {
         AffineTransform t = new AffineTransform(sx, 0, 0, sy, 0, 0);
         return new Transformation2DImpl(t);
     }
 
     @Override
-    public Transformation2D translate(float tx, float ty)
+    public Transformation2D translate(double tx, double ty)
     {
         AffineTransform t = new AffineTransform(1, 0, 0, 1, tx, ty);
         return new Transformation2DImpl(t);
     }
 
     @Override
-    public Transformation2D rotate(float angle)
+    public Transformation2D rotate(double angle)
     {
         return new Transformation2DImpl(AffineTransform.getRotateInstance(angle));
     }
     
     @Override
-    public Transformation2D rotate(float angle, Point2D pivot)
+    public Transformation2D rotate(double angle, Point2D pivot)
     {
         AffineTransform t = AffineTransform.getRotateInstance(angle, pivot.x(), pivot.y());
         return new Transformation2DImpl(t);
@@ -95,12 +113,14 @@ public class G2DImpl extends AbstractG2D
     }
 
     @Override
-    public Transformation2D combine(Transformation2D t2, Transformation2D t1)
+    public Transformation2D combine(Transformation2D a, Transformation2D b, Transformation2D... rest)
     {
-        AffineTransform a = ((Transformation2DImpl) t2).getJavaTransform();
-        AffineTransform b = ((Transformation2DImpl) t1).getJavaTransform();
-        AffineTransform res = new AffineTransform(a);
-        res.concatenate(b);
+        AffineTransform res = new AffineTransform(((Transformation2DImpl) a).getJavaTransform());
+        res.concatenate(((Transformation2DImpl) b).getJavaTransform());
+        for(Transformation2D t : rest)
+        {
+            res.concatenate(((Transformation2DImpl) t).getJavaTransform());
+        }
         return new Transformation2DImpl(res);
     }
 

@@ -32,16 +32,16 @@ public class Transformation2DImpl implements Transformation2D
         @Override
         public G2D.Point2D transform(G2D.Point2D p)
         {
-            java.awt.geom.Point2D.Float jp = new java.awt.geom.Point2D.Float(p.x(), p.y());
+            java.awt.geom.Point2D.Double jp = new java.awt.geom.Point2D.Double(p.x(), p.y());
             trans.transform(jp, jp);
-            return new PV2DImpl(jp.x, jp.y);
+            return new PVD2DImpl(jp.x, jp.y);
         }
 
         @Override
         public G2D.Vector2D transform(G2D.Vector2D v)
         {
-            java.awt.geom.Point2D.Float jp = new java.awt.geom.Point2D.Float(v.x(), v.y());
+            java.awt.geom.Point2D.Double jp = new java.awt.geom.Point2D.Double(v.x(), v.y());
             trans.deltaTransform(jp, jp);
-            return new PV2DImpl(jp.x, jp.y);
+            return new PVD2DImpl(jp.x, jp.y);
         }
 }
