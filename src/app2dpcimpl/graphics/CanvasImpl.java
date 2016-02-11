@@ -28,15 +28,14 @@ import java.awt.geom.Rectangle2D;
 public class CanvasImpl implements Canvas
 {
 
-    private static final AffineTransform id = new AffineTransform(1, 0, 0, 1, 0,
-                                                                  0);
+    private static final AffineTransform ID = new AffineTransform(1, 0, 0, 1, 0, 0);
     private AffineTransform toScreen;
     private Font font;
     private float fontHeight;
     private float fontWidth;
     private float fontBase;
     private final Polygon unitCircle;
-    private final Polygon unitSquare;
+    private final Polygon kiloSquare;
     private Graphics2D g;
     private final Rectangle bounds;
     private final ColorFactory colorFactory;
@@ -50,7 +49,7 @@ public class CanvasImpl implements Canvas
         this.colorFactory = colorFactory;
         this.g2d = g2d;
         unitCircle = g2d.createCircle(g2d.origo(), 1, 16);
-        unitSquare = g2d.createRectangle(g2d.origo(), 1000, 1000);
+        kiloSquare = g2d.createRectangle(g2d.origo(), 1000, 1000);
     }
 
     public void setToScreen(AffineTransform toScreen)
@@ -80,7 +79,7 @@ public class CanvasImpl implements Canvas
     public void clear(Color c)
     {
         AffineTransform cur = g.getTransform();
-        g.setTransform(id);
+        g.setTransform(ID);
         g.setColor(((ColorImpl) c).getAWTColor());
         g.fillRect(0, 0, bounds.width, bounds.height);
         g.setColor(curColor.getAWTColor());
@@ -122,7 +121,7 @@ public class CanvasImpl implements Canvas
         p1 = curTrans.transform(p1);
         p2 = curTrans.transform(p2);
         AffineTransform cur = g.getTransform();
-        g.setTransform(id);
+        g.setTransform(toScreen);
         g.drawLine((int) p1.x(), (int) p1.y(), (int) p2.x(), (int) p2.y());
         g.setTransform(cur);
     }
@@ -159,7 +158,7 @@ public class CanvasImpl implements Canvas
             AffineTransform res = new AffineTransform(cur);
             res.concatenate(t);
             g.setTransform(res);
-            g.fill(((PolygonImpl) unitSquare).getShape());
+            g.fill(((PolygonImpl) kiloSquare).getShape());
             g.setTransform(cur);
         }
     }
@@ -174,7 +173,7 @@ public class CanvasImpl implements Canvas
             AffineTransform res = new AffineTransform(cur);
             res.concatenate(t);
             g.setTransform(res);
-            g.draw(((PolygonImpl) unitSquare).getShape());
+            g.draw(((PolygonImpl) kiloSquare).getShape());
             g.setTransform(cur);
         }
     }

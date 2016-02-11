@@ -6,6 +6,8 @@
 package app2dpcimpl.geometry;
 
 import app2dapi.geometry.G2D;
+import app2dapi.geometry.G2D.BoundingBox2D;
+import app2dapi.geometry.G2D.Point2D;
 import app2dapi.geometry.G2D.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
@@ -18,19 +20,21 @@ import java.util.Iterator;
 public class PolygonImpl implements Polygon
 {
 
-    private final G2D.Point2D[] points;
+    private final Point2D[] points;
     private final Path2D.Float path;
+    private BoundingBox2D bbox;
 
-    public PolygonImpl(G2D.Point2D[] points)
+    public PolygonImpl(Point2D[] points)
     {
         this.points = points;
         path = new Path2D.Float(Path2D.WIND_NON_ZERO, points.length + 1);
         path.moveTo(points[0].x(), points[0].y());
-        for (int i = 1; i < points.length; ++i)
+        for(int i = 1; i < points.length; ++i)
         {
             path.lineTo(points[i].x(), points[i].y());
         }
         path.lineTo(points[0].x(), points[0].y());
+        this.bbox = null;
     }
 
     public Shape getShape()
@@ -51,12 +55,53 @@ public class PolygonImpl implements Polygon
     }
 
     @Override
-    public Iterator<G2D.Point2D> iterator()
+    public Iterator<Point2D> iterator()
     {
         return new PolygonIterator();
     }
 
-    private class PolygonIterator implements Iterator<G2D.Point2D>
+    @Override
+    public boolean contains(Point2D point)
+    {
+        return path.contains(point.x(), point.y());
+    }
+
+    @Override
+    public BoundingBox2D getBoundingBox()
+    {
+        if(bbox == null)
+        {
+            double minX = points[0].x();
+            double maxX = minX;
+            double minY = points[0].y();
+            double maxY = minY;
+            for(int i = 1; i < points.length; ++i)
+            {
+                double x = points[i].x();
+                double y = points[i].y();
+                if(x < minX)
+                {
+                    minX = x;
+                }
+                else if(x > maxX)
+                {
+                    maxX = x;
+                }
+                if(y < minY)
+                {
+                    minY = y;
+                }
+                else if(y > maxY)
+                {
+                    maxY = y;
+                }
+            }
+            this.bbox = new BoundingBox2DImpl(minX, maxX, minY, maxY);
+        }
+        return bbox;
+    }
+
+    private class PolygonIterator implements Iterator<Point2D>
     {
 
         private int pos;
@@ -73,11 +118,11 @@ public class PolygonImpl implements Polygon
         }
 
         @Override
-        public G2D.Point2D next()
+        public Point2D next()
         {
             return points[pos++];
         }
-        
+
         @Override
         public void remove()
         {
