@@ -14,6 +14,7 @@ import app2dapi.graphics.Color;
 import app2dapi.graphics.ColorFactory;
 import app2dpcimpl.geometry.PolygonImpl;
 import app2dpcimpl.geometry.Transformation2DImpl;
+import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -97,6 +98,12 @@ public class CanvasImpl implements Canvas
     public Color getColor()
     {
         return curColor;
+    }
+    
+     @Override
+    public void setLineWidth(float width)
+    {
+        g.setStroke(new BasicStroke(width));
     }
 
     @Override
@@ -249,4 +256,5 @@ public class CanvasImpl implements Canvas
         double scale = height / fontHeight;
         return scale * fontWidth * text.length();
     }
+
 }

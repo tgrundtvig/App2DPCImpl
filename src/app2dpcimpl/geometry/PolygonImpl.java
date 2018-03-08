@@ -27,13 +27,15 @@ public class PolygonImpl implements Polygon
     public PolygonImpl(Point2D[] points)
     {
         this.points = points;
+        
         path = new Path2D.Float(Path2D.WIND_NON_ZERO, points.length + 1);
         path.moveTo(points[0].x(), points[0].y());
         for(int i = 1; i < points.length; ++i)
         {
             path.lineTo(points[i].x(), points[i].y());
         }
-        path.lineTo(points[0].x(), points[0].y());
+        path.closePath();
+        
         this.bbox = null;
     }
 
