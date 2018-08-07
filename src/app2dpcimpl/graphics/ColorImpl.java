@@ -29,9 +29,24 @@ public class ColorImpl implements Color
         col = new java.awt.Color(c, true);
     }
     
+    ColorImpl(int r, int g, int b, int a)
+    {
+        col = new java.awt.Color(r, g, b, a);
+    }
+    
+    ColorImpl(int r, int g, int b)
+    {
+        col = new java.awt.Color(r, g, b, 255);
+    }
+    
     ColorImpl(float r, float g, float b, float a)
     {
         col = new java.awt.Color(r, g, b, a);
+    }
+    
+    ColorImpl(float r, float g, float b)
+    {
+        col = new java.awt.Color(r, g, b, 1);
     }
     
     java.awt.Color getAWTColor()

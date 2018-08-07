@@ -34,11 +34,12 @@ import java.awt.image.MemoryImageSource;
 public class PCPlatformImpl implements Platform, WindowListener
 {
     private final boolean fullScreen;
-    private App2D curApp;
+    private boolean quit;
 
     public PCPlatformImpl()
     {
         fullScreen = true;
+        quit = false;
     }
     
     
@@ -46,6 +47,7 @@ public class PCPlatformImpl implements Platform, WindowListener
     public PCPlatformImpl(boolean fullScreen)
     {
         this.fullScreen = fullScreen;
+        quit = false;
     }
     
     
@@ -53,7 +55,6 @@ public class PCPlatformImpl implements Platform, WindowListener
     @Override
     public void runApplication(App2D app)
     {
-        curApp = app;
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = env.getDefaultScreenDevice();
         GraphicsConfiguration gc = device.getDefaultConfiguration();
@@ -115,7 +116,7 @@ public class PCPlatformImpl implements Platform, WindowListener
             AffineTransform toScreen = new AffineTransform(1,0,0,-1,((double) bounds.width)*0.5,((double) bounds.height)*0.5);
             canvas.setToScreen(toScreen);
             //Render loop
-            while (running)
+            while (running && !quit)
             {
                 Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
                 if (!strategy.contentsLost())
@@ -173,7 +174,7 @@ public class PCPlatformImpl implements Platform, WindowListener
     @Override
     public void windowClosing(WindowEvent e)
     {
-        
+        quit = true;
     }
 
     @Override

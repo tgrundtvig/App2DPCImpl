@@ -24,7 +24,7 @@ public class PolygonImpl implements Polygon
     private final Path2D.Float path;
     private BoundingBox2D bbox;
 
-    public PolygonImpl(Point2D[] points)
+    public PolygonImpl(Point2D[] points, boolean close)
     {
         this.points = points;
         
@@ -34,7 +34,10 @@ public class PolygonImpl implements Polygon
         {
             path.lineTo(points[i].x(), points[i].y());
         }
-        path.closePath();
+        if(close)
+        {
+            path.closePath();
+        }
         
         this.bbox = null;
     }

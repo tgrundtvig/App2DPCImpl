@@ -22,12 +22,12 @@ public class ScreenImpl implements Screen, ColorFactory
 {
     private final int width;
     private final int height;
-    private static final Color WHITE = new ColorImpl(1,1,1,1);
-    private static final Color BLACK = new ColorImpl(0,0,0,1);
-    private static final Color RED = new ColorImpl(1,0,0,1);
-    private static final Color GREEN = new ColorImpl(0,1,0,1);
-    private static final Color BLUE = new ColorImpl(0,0,1,1);
-    private static final Color YELLOW = new ColorImpl(1,1,0,1);
+    private static final Color WHITE = new ColorImpl(255,255,255,255);
+    private static final Color BLACK = new ColorImpl(0,0,0,255);
+    private static final Color RED = new ColorImpl(255,0,0,255);
+    private static final Color GREEN = new ColorImpl(0,255,0,255);
+    private static final Color BLUE = new ColorImpl(0,0,255,255);
+    private static final Color YELLOW = new ColorImpl(255,255,0,255);
 
     public ScreenImpl(int width, int height)
     {
@@ -62,7 +62,19 @@ public class ScreenImpl implements Screen, ColorFactory
     @Override
     public Color newColor(float r, float g, float b)
     {
-        return new ColorImpl(r,g,b,1);
+        return new ColorImpl(r,g,b);
+    }
+    
+    @Override
+    public Color newColorInt(int r, int g, int b, int a)
+    {
+        return new ColorImpl(r,g,b,a);
+    }
+
+    @Override
+    public Color newColorInt(int r, int g, int b)
+    {
+        return new ColorImpl(r,g,b);
     }
 
     @Override

@@ -133,12 +133,25 @@ public class G2DImpl extends AbstractG2D
     @Override
     public Polygon createPolygon(Point2D[] points)
     {
+        return doCreate(points, true);
+    }
+    
+    @Override
+    public Polygon createPath(Point2D[] points)
+    {
+        return doCreate(points, true);
+    }
+    
+    private PolygonImpl doCreate(Point2D[] points, boolean close)
+    {
         //Defensive copy...
         Point2D[] copy = new Point2D[points.length];
         for(int i = 0; i < points.length; ++i)
         {
             copy[i] = points[i];
         }
-        return new PolygonImpl(copy);
+        return new PolygonImpl(copy, close);
     }
+
+    
 }

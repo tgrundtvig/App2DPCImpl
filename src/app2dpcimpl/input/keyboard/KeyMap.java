@@ -183,6 +183,13 @@ public class KeyMap
             case KeyEvent.VK_NUMPAD9:
                 return Key.VK_NUM_9;
                 
+                
+            //Delete and backspace
+            case KeyEvent.VK_BACK_SPACE:
+                return Key.VK_BACK_SPACE;
+            case KeyEvent.VK_DELETE:
+                return Key.VK_DELETE;
+                
 
             default:
                 return Key.UNKNOWN;

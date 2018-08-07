@@ -6,6 +6,7 @@
 package app2dpcimpl.graphics;
 
 import app2dapi.geometry.G2D;
+import app2dapi.geometry.G2D.Path;
 import app2dapi.geometry.G2D.Point2D;
 import app2dapi.geometry.G2D.Polygon;
 import app2dapi.geometry.G2D.Transformation2D;
@@ -195,6 +196,12 @@ public class CanvasImpl implements Canvas
     public void drawOutlinedPolygon(Polygon polygon)
     {
         g.draw(((PolygonImpl) polygon).getShape());
+    }
+    
+    @Override
+    public void drawPath(Path path)
+    {
+        g.draw(((PolygonImpl) path).getShape());
     }
 
     @Override
